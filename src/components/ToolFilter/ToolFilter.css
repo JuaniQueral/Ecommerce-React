@@ -1,0 +1,39 @@
+/* Reset de estilos para eliminar márgenes y rellenos predeterminados */
+input {
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+}
+
+/* Estilo para el contenedor del filtro */
+.Tools-filter {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+/* Estilo para el control del filtro */
+.Tools-filter__control {
+  margin-right: 10px;
+}
+
+/* Estilo para los campos de entrada de texto */
+.Tools-filter__control input {
+  width: 200px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 16px;
+}
+
+/* Estilo para el botón de búsqueda (opcional) */
+/* Si decides agregar un botón de búsqueda, puedes personalizar su estilo aquí */
+.Tools-filter__button {
+  background-color: #333;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}

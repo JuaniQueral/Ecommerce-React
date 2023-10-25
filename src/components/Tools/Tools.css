@@ -1,0 +1,39 @@
+/* Estilo para el contenedor de las herramientas */
+.tools {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 20px;
+}
+
+/* Estilo para el mensaje cuando no hay herramientas disponibles */
+.tools p {
+  font-size: 16px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Estilo para los filtros (opcional) */
+/* Puedes personalizar los estilos de los filtros aquí si los tienes */
+/* Por ejemplo, los estilos para los campos de filtro de nombre y precio */
+.filter-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.filter-container input {
+  width: 45%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 16px;
+}
+
+.filter-container button {
+  background-color: #333;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}

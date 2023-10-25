@@ -1,0 +1,78 @@
+/* Contenedor para la lista de productos */
+.productos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* Tarjeta de producto individual */
+.producto {
+  width: 30%; /* Ajusta el ancho según sea necesario */
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+
+  /* Centra el contenido verticalmente */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.producto:hover {
+  transform: scale(
+    1.05
+  ); /* Agrega un ligero efecto de zoom al pasar el mouse */
+}
+
+/* Imagen del producto */
+.producto_img img {
+  max-width: 100%;
+  max-height: 150px; /* Redujo la altura máxima de la imagen */
+  height: auto;
+}
+
+/* Título del producto */
+.producto_footer h1 {
+  font-size: 0.8rem; /* Tamaño de fuente del título reducido */
+  margin: 0;
+}
+
+/* Categoría del producto */
+.producto_footer p {
+  font-size: 0.7rem; /* Tamaño de fuente de la categoría reducido aún más */
+  color: #888;
+  margin: 3px 0; /* Márgenes inferiores y superiores reducidos */
+}
+
+/* Precio del producto */
+.price {
+  font-weight: bold;
+  font-size: 0.9rem; /* Tamaño de fuente del precio reducido */
+  color: #333;
+}
+
+/* Botón de agregar al carrito */
+.button {
+  margin-top: 8px; /* Espacio superior reducido */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn {
+  padding: 4px 8px; /* Tamaño del botón reducido */
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 0.7rem; /* Tamaño de fuente del botón reducido aún más */
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
