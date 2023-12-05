@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './ToolFilter.css';
 
 const ToolsFilter = ({ nameValueFilter, onFilterNameChange }) => {
   const changeNameHandler = (event) => {
     const newNameFilter = event.target.value;
-    // setNameFilter(newNameFilter);
     onFilterNameChange(newNameFilter);
   };
 

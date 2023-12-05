@@ -6,7 +6,6 @@ import ToolCard from '../ToolCard/ToolCard';
 import { Button } from 'react-bootstrap';
 import { Role } from '../models/constantes';
 import { AuthenticationContext } from '../services/authentication/authentication.context';
-import Card from 'react-bootstrap/Card';
 
 const ToolItem = ({ tool, addItemCart }) => {
   const { user } = useContext(AuthenticationContext);

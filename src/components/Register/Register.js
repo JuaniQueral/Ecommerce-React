@@ -1,11 +1,7 @@
 import React, { useContext, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { AuthenticationContext } from '../services/authentication/authentication.context';
-import ToggleTheme from '../ui/ToggleTheme';
-import useWindowSize from '../custom/useWindowSize/useWindowSize';
-import ComboLanguage from '../ui/ComboLanguage/ComboLanguage';
 import useTranslation from '../custom/useTranslation/useTranslation';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { APIContext } from '../services/api/api.context';
 import { Button } from 'react-bootstrap';
@@ -14,7 +10,7 @@ import { ThemeContext } from '../services/theme/theme.context';
 const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState(''); // Agregamos estado para la contraseña
+  const [password, setPassword] = useState('');
 
   const [errors, setErrors] = useState([
     { text: 'Nombre no puede ser vacío', isError: false },
@@ -22,15 +18,13 @@ const Register = () => {
     { text: 'Password no puede ser vacío', isError: false },
   ]);
 
-  const { handleLogin } = useContext(AuthenticationContext);
   const { theme } = useContext(ThemeContext);
-  const { toggleLoading, setCartEmpty } = useContext(APIContext);
+  const { toggleLoading } = useContext(APIContext);
 
   const nameRef = useRef(null);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
-  const { width, height } = useWindowSize();
   const translate = useTranslation();
 
   const navigation = useNavigate();

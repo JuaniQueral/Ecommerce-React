@@ -4,7 +4,7 @@ import UserTable from './UserTable';
 import UserForm from './UserForm';
 import { APIContext } from '../services/api/api.context';
 import { AuthenticationContext } from '../services/authentication/authentication.context';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
 

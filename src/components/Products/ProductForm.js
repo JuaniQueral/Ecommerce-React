@@ -23,7 +23,6 @@ const ProductForm = ({ addProduct, updateProduct, editing, setEditing, currentPr
     setProduct(initialFormState);
   };
 
-  // Set product data for editing
   React.useEffect(() => {
     if (editing) {
       setProduct(currentProduct);
