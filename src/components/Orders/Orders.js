@@ -12,7 +12,7 @@ const OrdersTable = () => {
 
   useEffect(() => {
     toggleLoading(true);
-    fetch('http://localhost:8080/order/mis-pedidos', {
+    fetch('https://tup-ecommerce.onrender.com/order/mis-pedidos', {
       headers: {
         Authorization: `Bearer ${user.token}`,
       },

@@ -84,7 +84,7 @@ const Register = () => {
 
     toggleLoading(true);
 
-    fetch('http://localhost:8080/auth/register', {
+    fetch('https://tup-ecommerce.onrender.com/auth/register', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {

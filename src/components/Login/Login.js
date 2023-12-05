@@ -64,7 +64,7 @@ const Login = () => {
 
     toggleLoading(true);
 
-    fetch('http://localhost:8080/auth/authenticate', {
+    fetch('https://tup-ecommerce.onrender.com/auth/authenticate', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
@@ -74,7 +74,7 @@ const Login = () => {
       .then((response) => response.json())
       .then((response) => {
         const token = response.token;
-        fetch('http://localhost:8080/user/profile', {
+        fetch('https://tup-ecommerce.onrender.com/user/profile', {
           headers: {
             Authorization: `Bearer ${response.token}`,
           },
@@ -124,7 +124,7 @@ const Login = () => {
     <div className='login-container'>
       <div className={`login-box ${theme === 'dark' && 'login-box-dark'}`}>
         <div className='action-container'>
-          <ComboLanguage />
+          {/* <ComboLanguage /> */}
           <ToggleTheme />
         </div>
         <h4>¡BIENVENIDO A LA TIENDA DE FERRECAS!</h4>

@@ -19,7 +19,7 @@ const Users = () => {
   // TODO: Se esta ejecutando 2 veces
   useEffect(() => {
     toggleLoading(true);
-    fetch('http://localhost:8080/user', {
+    fetch('https://tup-ecommerce.onrender.com/user', {
       headers: {
         Authorization: `Bearer ${user.token}`,
       },
@@ -37,7 +37,7 @@ const Users = () => {
 
   const addUser = (userData) => {
     toggleLoading(true);
-    fetch('http://localhost:8080/user/create', {
+    fetch('https://tup-ecommerce.onrender.com/user/create', {
       method: 'POST',
       body: JSON.stringify(userData),
       headers: {
@@ -79,7 +79,7 @@ const Users = () => {
 
   const deleteUser = (id) => {
     toggleLoading(true);
-    fetch(`http://localhost:8080/user/${id}`, {
+    fetch(`https://tup-ecommerce.onrender.com/user/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${user.token}`,
@@ -124,7 +124,7 @@ const Users = () => {
 
   const updateUser = (id, updatedUser) => {
     toggleLoading(true);
-    fetch('http://localhost:8080/user', {
+    fetch('https://tup-ecommerce.onrender.com/user', {
       method: 'PUT',
       body: JSON.stringify(updatedUser),
       headers: {

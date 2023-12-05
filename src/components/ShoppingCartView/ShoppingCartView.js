@@ -41,7 +41,7 @@ const ShoppingCartView = () => {
       email: formData.email,
       orderItems: orderItemFormat,
     };
-    fetch('http://localhost:8080/order/create', {
+    fetch('https://tup-ecommerce.onrender.com/order/create', {
       method: 'POST',
       body: JSON.stringify(order),
       headers: {

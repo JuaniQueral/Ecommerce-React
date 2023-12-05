@@ -24,7 +24,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     toggleLoading(true);
-    fetch('http://localhost:8080/product', {
+    fetch('https://tup-ecommerce.onrender.com/product', {
       headers: {
         Authorization: `Bearer ${user.token}`,
       },

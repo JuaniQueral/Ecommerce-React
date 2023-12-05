@@ -15,7 +15,7 @@ const Products = () => {
 
   useEffect(() => {
     toggleLoading(true);
-    fetch('http://localhost:8080/product', {
+    fetch('https://tup-ecommerce.onrender.com/product', {
       headers: {
         Authorization: `Bearer ${user.token}`,
       },
@@ -35,7 +35,7 @@ const Products = () => {
 
   const addProduct = (product) => {
     toggleLoading(true);
-    fetch('http://localhost:8080/product/create', {
+    fetch('https://tup-ecommerce.onrender.com/product/create', {
       method: 'POST',
       body: JSON.stringify(product),
       headers: {
@@ -77,7 +77,7 @@ const Products = () => {
 
   const deleteProduct = (id) => {
     toggleLoading(true);
-    fetch(`http://localhost:8080/product/${id}`, {
+    fetch(`https://tup-ecommerce.onrender.com/product/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${user.token}`,
@@ -122,7 +122,7 @@ const Products = () => {
 
   const updateProduct = (id, updatedProduct) => {
     toggleLoading(true);
-    fetch('http://localhost:8080/product', {
+    fetch('https://tup-ecommerce.onrender.com/product', {
       method: 'PUT',
       body: JSON.stringify(updatedProduct),
       headers: {
