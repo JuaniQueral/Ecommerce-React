@@ -1,19 +1,28 @@
 /* Estilo para el contenedor principal del formulario de inicio de sesión */
 .login-container {
-  max-width: 400px;
-  margin: 0 auto;
+  width: 100vw;
   padding: 20px;
-  background-color: #f4f4f4;
-  border-radius: 5px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+.action-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
 }
 
 /* Estilo para el cuadro de inicio de sesión */
 .login-box {
   background-color: #fff;
-  padding: 20px;
+  padding: 40px;
   border-radius: 5px;
   text-align: center;
+  background-color: #f4f4f4;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
 /* Estilo para el cuadro de inicio de sesión en modo oscuro */

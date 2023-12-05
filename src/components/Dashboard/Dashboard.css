@@ -1,0 +1,11 @@
+.actionButton {
+  column-gap: 50px;
+}
+
+.item_total {
+  font-size: 20px;
+}
+
+.container-global {
+  height: 95vh;
+}

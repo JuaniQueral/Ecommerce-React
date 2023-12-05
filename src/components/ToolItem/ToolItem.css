@@ -1,55 +1,7 @@
-/* Estilo para el contenedor del elemento de herramienta */
-.ToolCard {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  margin-bottom: 20px;
+.button {
+  margin: 25px;
 }
-
-/* Estilo para el título de la herramienta */
-.ToolCard h2 {
-  font-size: 24px;
-  margin-bottom: 10px;
-}
-
-/* Estilo para el nombre de la marca de la herramienta */
-.ToolCard h3 {
-  font-size: 18px;
-  margin-bottom: 5px;
-  color: #333;
-}
-
-/* Estilo para el precio de la herramienta */
-.ToolCard h3:last-child {
-  font-weight: bold;
-  color: #007bff; /* Cambiar color a tu preferencia */
-}
-
-/* Estilo para la imagen de la herramienta */
-.ToolCard p {
-  margin-top: 10px;
-  margin-bottom: 5px;
-}
-
-/* Estilo para la descripción de la herramienta */
-.ToolCard p:last-child {
-  font-size: 16px;
-}
-
-/* Estilo para el botón "Cambiar nombre" */
-.ToolCard button {
-  background-color: #333;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-/* Estilo para el botón al pasar el mouse sobre él (opcional) */
-.ToolCard button:hover {
-  background-color: #555; /* Cambiar color a tu preferencia */
+.product_img {
+  display: flex;
+  justify-content: center;
 }

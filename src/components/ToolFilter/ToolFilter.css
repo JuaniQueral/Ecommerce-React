@@ -1,11 +1,3 @@
-/* Reset de estilos para eliminar márgenes y rellenos predeterminados */
-input {
-  margin: 0;
-  padding: 0;
-  border: none;
-  outline: none;
-}
-
 /* Estilo para el contenedor del filtro */
 .Tools-filter {
   display: flex;

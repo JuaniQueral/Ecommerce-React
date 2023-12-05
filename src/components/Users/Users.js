@@ -1,43 +1,45 @@
 import React, { useContext, useEffect, useState } from 'react';
+import './Users.css';
+import UserTable from './UserTable';
+import UserForm from './UserForm';
 import { APIContext } from '../services/api/api.context';
 import { AuthenticationContext } from '../services/authentication/authentication.context';
-import { useNavigate } from 'react-router';
+import { ToastContainer, toast } from 'react-toastify';
 import { Button } from 'react-bootstrap';
-import { toast } from 'react-toastify';
-import ProductTable from './ProductTable';
-import ProductForm from './ProductForm';
+import { useNavigate } from 'react-router';
 
-const Products = () => {
+const Users = () => {
+  const [users, setUsers] = useState([]);
   const { toggleLoading } = useContext(APIContext);
   const { user } = useContext(AuthenticationContext);
   const navigation = useNavigate();
-  const [products, setProducts] = useState([]);
+  const [editing, setEditing] = useState(false);
+  const [currentUser, setCurrentUser] = useState({ id: null, name: '', email: '' });
 
+  // TODO: Se esta ejecutando 2 veces
   useEffect(() => {
     toggleLoading(true);
-    fetch('http://localhost:8080/product', {
+    fetch('http://localhost:8080/user', {
       headers: {
         Authorization: `Bearer ${user.token}`,
       },
     })
       .then((response) => response.json())
-      .then((productsData) => {
-        setProducts(productsData);
+      .then((usersData) => {
+        setUsers(usersData);
         toggleLoading(false);
       })
       .catch((error) => {
+        console.error(error);
         toggleLoading(false);
       });
   }, []);
 
-  const [editing, setEditing] = useState(false);
-  const [currentProduct, setCurrentProduct] = useState({ id: null, name: '', price: 0, stock: 0, imageUrl: '' });
-
-  const addProduct = (product) => {
+  const addUser = (userData) => {
     toggleLoading(true);
-    fetch('http://localhost:8080/product/create', {
+    fetch('http://localhost:8080/user/create', {
       method: 'POST',
-      body: JSON.stringify(product),
+      body: JSON.stringify(userData),
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${user.token}`,
@@ -55,14 +57,14 @@ const Products = () => {
           progress: undefined,
           theme: 'colored',
         });
-        setProducts([...products, { id: products.length + 1, ...response }]);
+        setUsers([...users, { id: users.length + 1, ...response }]);
         setTimeout(() => {
           toggleLoading(false);
         }, 1500);
       })
       .catch((error) => {
         toggleLoading(false);
-        toast.error('Ocurrio un error el dar de alta el producto', {
+        toast.error('Ocurrio un error el dar de alta el usuario', {
           position: 'top-center',
           autoClose: 5000,
           hideProgressBar: false,
@@ -75,9 +77,9 @@ const Products = () => {
       });
   };
 
-  const deleteProduct = (id) => {
+  const deleteUser = (id) => {
     toggleLoading(true);
-    fetch(`http://localhost:8080/product/${id}`, {
+    fetch(`http://localhost:8080/user/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${user.token}`,
@@ -95,14 +97,14 @@ const Products = () => {
           progress: undefined,
           theme: 'colored',
         });
-        setProducts(products.filter((product) => product.id !== id));
+        setUsers(users.filter((user) => user.id !== id));
         setTimeout(() => {
           toggleLoading(false);
         }, 1500);
       })
       .catch((error) => {
         toggleLoading(false);
-        toast.error('No se pudo eliminar el producto.', {
+        toast.error('No se pudo eliminar el usuario.', {
           position: 'top-center',
           autoClose: 5000,
           hideProgressBar: false,
@@ -115,16 +117,16 @@ const Products = () => {
       });
   };
 
-  const editProduct = (product) => {
+  const editUser = (user) => {
     setEditing(true);
-    setCurrentProduct(product);
+    setCurrentUser(user);
   };
 
-  const updateProduct = (id, updatedProduct) => {
+  const updateUser = (id, updatedUser) => {
     toggleLoading(true);
-    fetch('http://localhost:8080/product', {
+    fetch('http://localhost:8080/user', {
       method: 'PUT',
-      body: JSON.stringify(updatedProduct),
+      body: JSON.stringify(updatedUser),
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${user.token}`,
@@ -142,14 +144,14 @@ const Products = () => {
           progress: undefined,
           theme: 'colored',
         });
-        setProducts(products.map((product) => (product.id === id ? updatedProduct : product)));
+        setUsers(users.map((user) => (user.id === id ? updatedUser : user)));
         setTimeout(() => {
           toggleLoading(false);
         }, 1500);
       })
       .catch((error) => {
         toggleLoading(false);
-        toast.error('No se pudo actualizar el producto.', {
+        toast.error('No se pudo actualizar el usuario.', {
           position: 'top-center',
           autoClose: 5000,
           hideProgressBar: false,
@@ -171,18 +173,18 @@ const Products = () => {
       >
         Volver
       </Button>
-      <h1>ABM de Productos</h1>
-      <ProductTable products={products} deleteProduct={deleteProduct} editProduct={editProduct} />
-      <ProductForm
-        addProduct={addProduct}
-        updateProduct={updateProduct}
+      <h1>ABM de Usuarios</h1>
+      <UserTable users={users} deleteUser={deleteUser} editUser={editUser} />
+      <UserForm
+        addUser={addUser}
+        updateUser={updateUser}
         editing={editing}
         setEditing={setEditing}
-        currentProduct={currentProduct}
-        setCurrentProduct={setCurrentProduct}
+        currentUser={currentUser}
+        setCurrentUser={setCurrentUser}
       />
     </div>
   );
 };
 
-export default Products;
+export default Users;

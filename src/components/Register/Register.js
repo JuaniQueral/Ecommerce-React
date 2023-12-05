@@ -1,20 +1,23 @@
 import React, { useContext, useRef, useState } from 'react';
-import './Login.css';
 import { useNavigate } from 'react-router';
 import { AuthenticationContext } from '../services/authentication/authentication.context';
 import ToggleTheme from '../ui/ToggleTheme';
-import { ThemeContext } from '../services/theme/theme.context';
+import useWindowSize from '../custom/useWindowSize/useWindowSize';
 import ComboLanguage from '../ui/ComboLanguage/ComboLanguage';
 import useTranslation from '../custom/useTranslation/useTranslation';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { APIContext } from '../services/api/api.context';
 import { Button } from 'react-bootstrap';
+import { ThemeContext } from '../services/theme/theme.context';
 
-const Login = () => {
+const Register = () => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState(''); // Agregamos estado para la contraseña
+
   const [errors, setErrors] = useState([
+    { text: 'Nombre no puede ser vacío', isError: false },
     { text: 'Email no puede ser vacío', isError: false },
     { text: 'Password no puede ser vacío', isError: false },
   ]);
@@ -23,9 +26,11 @@ const Login = () => {
   const { theme } = useContext(ThemeContext);
   const { toggleLoading, setCartEmpty } = useContext(APIContext);
 
+  const nameRef = useRef(null);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
+  const { width, height } = useWindowSize();
   const translate = useTranslation();
 
   const navigation = useNavigate();
@@ -34,17 +39,31 @@ const Login = () => {
     setEmail(e.target.value);
   };
 
+  const nameChangeHandler = (e) => {
+    setName(e.target.value);
+  };
+
   const passwordChangeHandler = (e) => {
     setPassword(e.target.value);
   };
 
-  const signInHandler = () => {
+  const registerHandler = () => {
+    if (name.length === 0) {
+      nameRef.current.focus();
+      nameRef.current.style.borderColor = 'red';
+      nameRef.current.style.outline = 'none';
+      const newErrors = [...errors];
+      newErrors[0].isError = true;
+      setErrors(newErrors);
+      return;
+    }
+
     if (email.length === 0) {
       emailRef.current.focus();
       emailRef.current.style.borderColor = 'red';
       emailRef.current.style.outline = 'none';
       const newErrors = [...errors];
-      newErrors[0].isError = true;
+      newErrors[1].isError = true;
       setErrors(newErrors);
       return;
     }
@@ -52,19 +71,20 @@ const Login = () => {
     if (password.length === 0) {
       passwordRef.current.focus();
       const newErrors = [...errors];
-      newErrors[1].isError = true;
+      newErrors[2].isError = true;
       setErrors(newErrors);
       return;
     }
 
     const data = {
-      username: email,
+      name: name,
+      email: email,
       password: password,
     };
 
     toggleLoading(true);
 
-    fetch('http://localhost:8080/auth/authenticate', {
+    fetch('http://localhost:8080/auth/register', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
@@ -73,37 +93,24 @@ const Login = () => {
     })
       .then((response) => response.json())
       .then((response) => {
-        const token = response.token;
-        fetch('http://localhost:8080/user/profile', {
-          headers: {
-            Authorization: `Bearer ${response.token}`,
-          },
-        })
-          .then((response) => response.json())
-          .then((response) => {
-            toggleLoading(false);
-            handleLogin(email, token, response.role);
-            setCartEmpty();
-            navigation('/home');
-          })
-          .catch((error) => {
-            console.log(error);
-            toggleLoading(false);
-            toast.error('El usuario o la contraseña no son correctos', {
-              position: 'top-center',
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: 'colored',
-            });
-          });
+        toast.success('!Registro con éxito!', {
+          position: 'top-center',
+          autoClose: 500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: 'colored',
+        });
+        setTimeout(() => {
+          toggleLoading(false);
+          navigation('/login');
+        }, 1500);
       })
       .catch((error) => {
         toggleLoading(false);
-        toast.error('El usuario o la contraseña no son correctos', {
+        toast.error('Ocurrio un error el intentar registrarse', {
           position: 'top-center',
           autoClose: 5000,
           hideProgressBar: false,
@@ -116,21 +123,23 @@ const Login = () => {
       });
   };
 
-  const registerHendler = () => {
-    navigation('/register');
-  };
-
   return (
     <div className='login-container'>
       <div className={`login-box ${theme === 'dark' && 'login-box-dark'}`}>
-        <div className='action-container'>
-          <ComboLanguage />
-          <ToggleTheme />
-        </div>
-        <h4>¡BIENVENIDO A LA TIENDA DE FERRECAS!</h4>
+        <h4>Registrate! Es rápido y fácil.</h4>
         <div className='input-container'>
           <input
-            autoComplete='off'
+            className='input-control'
+            placeholder='Nombre'
+            type='name'
+            onChange={nameChangeHandler}
+            value={name}
+            ref={nameRef}
+          />
+        </div>
+        {errors[0].isError && <p>{errors[0].text}</p>}
+        <div className='input-container'>
+          <input
             className='input-control'
             placeholder='Email'
             type='email'
@@ -139,10 +148,9 @@ const Login = () => {
             ref={emailRef}
           />
         </div>
-        {errors[0].isError && <p>{errors[0].text}</p>}
+        {errors[1].isError && <p>{errors[1].text}</p>}
         <div className='input-container'>
           <input
-            autoComplete='off'
             className='input-control'
             placeholder={translate('password')}
             type='password'
@@ -151,16 +159,22 @@ const Login = () => {
             ref={passwordRef}
           />
         </div>
-        {errors[1].isError && <p>{errors[1].text}</p>}
-        <button onClick={signInHandler} className='signin-button' type='button'>
-          {translate('login')}
-        </button>
-        <Button onClick={registerHendler} className='mt-4' variant='text'>
+        {errors[2].isError && <p>{errors[2].text}</p>}
+        <button onClick={registerHandler} className='signin-button' type='button'>
           Registrarse
+        </button>
+        <Button
+          onClick={() => {
+            navigation('/home');
+          }}
+          className='mt-4'
+          variant='text'
+        >
+          Volver
         </Button>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default Register;

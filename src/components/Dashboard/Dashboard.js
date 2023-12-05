@@ -1,31 +1,34 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Button, Col, Row } from "react-bootstrap";
-import { useNavigate } from "react-router";
-import { AuthenticationContext } from "../services/authentication/authentication.context";
-import ToggleTheme from "../ui/ToggleTheme";
-import { APIContext } from "../services/api/api.context";
-import NewTool from "../NewTool/NewTool";
-import ToolsFilter from "../ToolFilter/ToolFilter";
-import Tools from "../Tools/Tools";
-import { RiShoppingCartLine } from "react-icons/ri"; // Importa el ícono del carrito
+// Dashboard.js
+import React, { useContext, useEffect, useState } from 'react';
+import { Button, Col, Row } from 'react-bootstrap';
+import { useNavigate } from 'react-router';
+import { AuthenticationContext } from '../services/authentication/authentication.context';
+import ToggleTheme from '../ui/ToggleTheme';
+import { APIContext } from '../services/api/api.context';
+import ToolsFilter from '../ToolFilter/ToolFilter';
+import Tools from '../Tools/Tools';
+import { RiShoppingCartLine } from 'react-icons/ri';
+import './Dashboard.css'; // Agrega un archivo CSS para estilos
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Role } from '../models/constantes';
 
 const Dashboard = () => {
   const { user, handleLogout } = useContext(AuthenticationContext);
-  const { toggleLoading } = useContext(APIContext);
+  const { toggleLoading, cart, handleAddItemToCart } = useContext(APIContext);
 
-  const userName = user.email.split("@")[0];
+  const userName = user.email.split('@')[0];
 
   const [tools, setTools] = useState([]);
-  const [filterName, setFilterName] = useState("");
-  const [filterPrice, setFilterPrice] = useState("");
-
-  // Estado local para el carrito de compras
-  const [cart, setCart] = useState([]);
+  const [filterName, setFilterName] = useState('');
 
   useEffect(() => {
     toggleLoading(true);
-
-    fetch("http://tu-api.com/tools")
+    fetch('http://localhost:8080/product', {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    })
       .then((response) => response.json())
       .then((toolsData) => {
         setTools(toolsData);
@@ -39,57 +42,80 @@ const Dashboard = () => {
 
   const navigation = useNavigate();
 
-  const addToolHandler = (tool) => {
-    // Implementa la lógica para agregar una nueva herramienta
-    // Solo permitir agregar herramientas si el usuario tiene el rol "admin"
-    if (user.role === "admin") {
-      // Agregar la lógica para agregar la herramienta a la lista y a la API
-      // Por ahora, agregaremos la herramienta al carrito local
-      setCart([...cart, tool]);
-    }
+  const addItemCart = (item) => {
+    handleAddItemToCart(item);
+    toast.success('Producto agregado!', {
+      position: 'top-center',
+      autoClose: 500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: 'colored',
+    });
   };
 
   const filterNameChanged = (name) => {
     setFilterName(name);
   };
 
-  const filterPriceChanged = (price) => {
-    setFilterPrice(price);
-  };
-
   const onLogoutHandler = () => {
     handleLogout();
-    navigation("/login");
+    navigation('/login');
+  };
+
+  const toggleShoppingCart = () => {
+    if (cart.length === 0) {
+      toast.warn('Debe agregar algún item al carrito', {
+        position: 'top-center',
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored',
+      });
+      return;
+    }
+    navigation('/cart');
   };
 
   return (
     <>
-      <Row className="me-2 my-4">
-        <Col>
-          <h4 className="text-left m-3">Hola {userName}</h4>
-        </Col>
-        <Col md={3} className="d-flex justify-content-end">
-          <ToggleTheme />
-          <Button className="ms-4" variant="primary" onClick={onLogoutHandler}>
-            Cerrar sesión
-          </Button>{" "}
-          {/* Renderizar el carrito */}
-          <div className="cart">
-            <RiShoppingCartLine size={24} />{" "}
-            {/* Renderiza el ícono del carrito */}
-            <span className="item_total">{cart.length}</span>
-          </div>
-        </Col>
-      </Row>
+      <div className='container-global'>
+        <Row className='me-2 my-4'>
+          <Col>
+            <div className='d-flex '>
+              <h4 className='text-left m-3'>Hola {userName}</h4>
+              {user.role === Role.ROOT && <Button onClick={() => navigation('/users')}>Ver usuarios</Button>}
+              {user.role === Role.ADMIN && <Button onClick={() => navigation('/products')}>Ver productos</Button>}
+              {user.role === Role.USER && <Button onClick={() => navigation('/orders')}>Mis pedidos</Button>}
+            </div>
+          </Col>
+          <Col md={3} className='d-flex justify-content-end actionButton'>
+            <ToggleTheme />
+            <Button className='' variant='primary' onClick={onLogoutHandler}>
+              Cerrar sesión
+            </Button>
+          </Col>
+        </Row>
 
-      {user.role === "admin" && <NewTool onToolAdded={addToolHandler} />}
-      <ToolsFilter
-        filterName={filterName}
-        filterPrice={filterPrice}
-        onFilterNameChange={filterNameChanged}
-        onFilterPriceChange={filterPriceChanged}
-      />
-      <Tools filterName={filterName} filterPrice={filterPrice} tools={tools} />
+        <Row className='me-2 my-4'>
+          {user.role === Role.USER && (
+            <div className='cart d-flex justify-content-end'>
+              <Button onClick={toggleShoppingCart} className='btn btn-success'>
+                <RiShoppingCartLine size={44} />
+                <span className='item_total'>{cart ? cart.length : 0}</span>
+              </Button>
+            </div>
+          )}
+        </Row>
+
+        <ToolsFilter filterName={filterName} onFilterNameChange={filterNameChanged} />
+        <Tools filterName={filterName} tools={tools} addItemCart={addItemCart} />
+      </div>
     </>
   );
 };

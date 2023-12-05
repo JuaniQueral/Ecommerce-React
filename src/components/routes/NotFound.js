@@ -1,20 +1,23 @@
-import React from "react";
-import { Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import './NotFound.css';
 
 const NotFound = () => {
   const navigation = useNavigate();
 
   const goBackHandler = () => {
-    navigation("/login");
+    navigation('/home');
   };
 
   return (
-    <div className="d-flex  flex-column justify-content-center align-items-center">
-      <h2>La pagina no esta disponible</h2>
-      <Button className="w-25" onClick={goBackHandler}>
-        Volver al Login
-      </Button>
+    <div className='not-found-container'>
+      <div className='not-found-content'>
+        <h1>Página no encontrada</h1>
+        <p>Lo sentimos, la página que buscas no está disponible.</p>
+        <button onClick={goBackHandler} className='back-button'>
+          Volver a la página principal
+        </button>
+      </div>
     </div>
   );
 };
